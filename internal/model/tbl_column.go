@@ -5,8 +5,9 @@ import (
 	"reflect"
 	"strings"
 
-	"gorm.io/gen/field"
 	"gorm.io/gorm"
+
+	"gorm.io/gen/field"
 )
 
 // Column table column's info
@@ -64,14 +65,17 @@ func (c *Column) ToField(nullable, coverable, signable bool) *Field {
 	if c, ok := c.Comment(); ok {
 		comment = c
 	}
-
+	jsonTagValue := c.jsonTagNS(c.Name())
+	if nullable || coverable || (c.Name() != "created_at" && c.Name() != "updated_at") {
+		jsonTagValue += ",omitempty"
+	}
 	return &Field{
 		Name:             c.Name(),
 		Type:             fieldType,
 		ColumnName:       c.Name(),
 		MultilineComment: c.multilineComment(),
 		GORMTag:          c.buildGormTag(),
-		Tag:              map[string]string{field.TagKeyJson: c.jsonTagNS(c.Name())},
+		Tag:              map[string]string{field.TagKeyJson: jsonTagValue},
 		ColumnComment:    comment,
 	}
 }

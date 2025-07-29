@@ -13,8 +13,9 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
 	"gorm.io/driver/sqlserver"
-	"gorm.io/gen"
 	"gorm.io/gorm"
+
+	"gorm.io/gen"
 )
 
 // DBType database type
@@ -144,12 +145,12 @@ func argParse() *CmdParams {
 	dsn := flag.String("dsn", "", "consult[https://gorm.io/docs/connecting_to_the_database.html]")
 	db := flag.String("db", string(dbMySQL), "input mysql|postgres|sqlite|sqlserver|clickhouse. consult[https://gorm.io/docs/connecting_to_the_database.html]")
 	tableList := flag.String("tables", "", "enter the required data table or leave it blank")
-	onlyModel := flag.Bool("onlyModel", false, "only generate models (without query file)")
+	onlyModel := flag.Bool("onlyModel", true, "only generate models (without query file)")
 	outPath := flag.String("outPath", defaultQueryPath, "specify a directory for output")
 	outFile := flag.String("outFile", "", "query code file name, default: gen.go")
 	withUnitTest := flag.Bool("withUnitTest", false, "generate unit test for query code")
-	modelPkgName := flag.String("modelPkgName", "", "generated model code's package name")
-	fieldNullable := flag.Bool("fieldNullable", false, "generate with pointer when field is nullable")
+	modelPkgName := flag.String("modelPkgName", "dbmodels", "generated model code's package name")
+	fieldNullable := flag.Bool("fieldNullable", true, "generate with pointer when field is nullable")
 	fieldCoverable := flag.Bool("fieldCoverable", false, "generate with pointer when field has default value")
 	fieldWithIndexTag := flag.Bool("fieldWithIndexTag", false, "generate field with gorm index tag")
 	fieldWithTypeTag := flag.Bool("fieldWithTypeTag", false, "generate field with gorm column type tag")
